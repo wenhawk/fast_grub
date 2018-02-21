@@ -3,7 +3,11 @@
 <div class="container">
   <h1>{{title}} Item</h1>
     <br/>
-    <form id="itemForm" class="form form-register" method="POST" action="" role="form">
+    {% if title == 'EDIT' %}
+    <form id="itemForm" class="form form-register" method="POST" action="{{url_for('edit_item',iid=iid)}}" role="form">
+    {% else %}
+    <form id="itemForm" class="form form-register" method="POST" action="{{url_for('create_item')}}" role="form">
+    {% endif %}
             {{ form.hidden_tag() }}
             <div class="form-group">
                 {{form.name.label}}

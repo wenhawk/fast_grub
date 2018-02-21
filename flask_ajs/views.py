@@ -86,7 +86,7 @@ def print_kot(kid):
         try:
             Printer.printKOT(orders=orders, kid=kid)
         except FileNotFoundError:
-            pass
+            print("----------->PRINTER NOT CONNECTED<--------")
         return redirect(url_for('home'))
     return render_template('print_kot.html', orders=orders, form=form)
 
@@ -101,6 +101,7 @@ def edit_kots(tid):
             try:
                 Printer.printKOT(orders=orders,kid=kid)
             except FileNotFoundError:
+                print("----------->PRINTER NOT CONNECTED<--------")
                 return redirect(url_for('home'))
         return redirect(url_for('home'))
     return render_template('edit_kot.html',orders=orders, form=form, title='kots',tid=tid)
@@ -113,17 +114,17 @@ def edit_kot(kid):
     if orders:
         if form.validate_on_submit():
             Order.editOrders(form)
-            if form.printFlag.data == 'yes':
-                try:
-                    Printer.printKOT(orders=orders,kid=kid)
-                except FileNotFoundError:
-                    pass
             bill = db.session.query(Bill).filter(BillKOT.kid == kid)\
                              .filter(Bill.bid == BillKOT.bid).first()
             bill_kot = BillKOT.query.filter_by(kid=kid).count()
             if bill_kot > 0:
                 bill.amount = bill.caclulateBillAmount()
                 db.session.commit()
+            if form.printFlag.data == 'yes':
+                try:
+                    Printer.printKOT(orders=orders,kid=kid)
+                except FileNotFoundError:
+                    print("----------->PRINTER NOT CONNECTED<--------")
             return redirect(url_for('home'))
         return render_template('edit_kot.html',orders=orders, form=form, title='kot',kid=kid)
     return redirect(url_for('admin_view_kots',page=1))
@@ -220,6 +221,39 @@ def create_table():
         return redirect(url_for('home'))
     return render_template('admin/create_table.html', form=form, title=title)
 
+@app.route('/admin/create_item' ,methods=['GET','POST'])
+def create_item():
+    title = 'CREATE'
+    form = ItemForm()
+    if form.validate_on_submit():
+        item = Item(name=form.name.data, cost=form.cost.data)
+        db.session.add(item)
+        try:
+            db.session.commit()
+        except:
+            print("----------->Item already present ",item.name,'<---------')
+        return redirect(url_for('view_items',page=1))
+    return render_template('admin/create_item.html', form=form, title=title)
+
+@app.route('/admin/edit_item<int:iid>' ,methods=['GET','POST'])
+def edit_item(iid):
+    title = 'EDIT'
+    item = Item.query.filter_by(iid=iid).first()
+    form = ItemForm()
+    if form.validate_on_submit():
+        item.name = form.name.data
+        item.cost = form.cost.data
+        db.session.add(item)
+        try:
+            db.session.commit()
+        except:
+            print("----------->Item already present ",item.name,'<---------')
+        return redirect(url_for('view_items',page=1))
+    else:
+        form.name.data = item.name
+        form.cost.data = item.cost
+    return render_template('admin/create_item.html', form=form, title=title, iid=iid)
+
 @app.route('/admin/view_items<int:page>', methods=['GET','POST'])
 def view_items(page):
     form = SearchForm()
@@ -305,6 +339,7 @@ def print_bill():
                 try:
                     Printer.printAJsBill(bill=bill, table=aj_table)
                 except FileNotFoundError:
+                    print("----------->PRINTER NOT CONNECTED<--------")
                     return redirect(url_for('home'))
     return redirect(url_for('home'))
 
@@ -317,6 +352,7 @@ def update_and_print_bill():
             try:
                 Printer.printAJsBill(bill=bill, table=bill.getTable())
             except FileNotFoundError:
+                print("----------->PRINTER NOT CONNECTED<--------")
                 return redirect(url_for('home'))
     return redirect(url_for('home'))
 

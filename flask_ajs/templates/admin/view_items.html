@@ -14,7 +14,7 @@
       </form>
     </div>
     <div class="col-md">
-      <!-- <a href="{{url_for('create_table')}}" class="btn btn-success float-right">CREATE</a> -->
+      <a href="{{url_for('create_item')}}" class="btn btn-success float-right">CREATE</a>
     </div>
   </div>
 
@@ -25,7 +25,7 @@
 
     {% for item in items %}
       <tr>
-        <td><a href="">{{item.iid}}</a></td>
+        <td><a href="{{url_for('edit_item',iid=item.iid)}}">{{item.iid}}</a></td>
         <td>{{item.name}}</td>
         <td>{{item.cost}}</td>
       </tr>
