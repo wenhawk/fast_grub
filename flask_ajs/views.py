@@ -3,7 +3,7 @@ from flask import render_template, url_for, redirect, request, jsonify
 from .models import Item, KOT, Order, AjTable, Bill, BillKOT, SubItem\
                     ,Category ,ItemCategory, SubItemCategory
 from .forms import ItemForm, KOTForm, OrderForm\
-, OrderStatusForm, BillForm, TableForm, ReportForm , SearchForm, IdSearchForm
+, OrderStatusForm, BillForm, TableForm, ReportForm , SearchForm, IdSearchForm, TableCreateForm
 from .printer import Printer
 from . import db
 from datetime import datetime

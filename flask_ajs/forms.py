@@ -11,6 +11,9 @@ class TableForm(FlaskForm):
     tid = FieldList(IntegerField('tid', validators=[DataRequired()]))
     flag = FieldList(SelectField('flag', choices=[('true','Active'),('false','Delete')]))
 
+class TableCreateForm(FlaskForm):
+        name = StringField('Name', validators=[DataRequired()])
+
 class SearchForm(FlaskForm):
         name = StringField('Name', validators=[DataRequired()])
 
