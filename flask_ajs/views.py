@@ -35,9 +35,11 @@ def report():
                                     ,end_date=end_date,payment_mode='cash')
         card = Bill.getTotalPaymentMode(start_date=start_date\
                                     ,end_date=end_date,payment_mode='card')
+        credit = Bill.getTotalPaymentMode(start_date=start_date\
+                                    ,end_date=end_date,payment_mode='credit')
         return render_template('view_reports.html'\
                     , item_quantity=item_quantity\
-                    , cost=cost,card=card,cash=cash, sortBy=sortBy)
+                    , cost=cost,card=card,cash=cash, sortBy=sortBy, credit=credit)
     return render_template('report.html', form=form)
 
 ###############

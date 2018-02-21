@@ -141,7 +141,7 @@ class Bill(db.Model):
 
     bid = db.Column(db.Integer, primary_key=True)
     timestamp = db.Column(db.DateTime, default=str(datetime.now())[0:19])
-    payment_mode = db.Column(db.Enum('cash', 'card'), nullable=False)
+    payment_mode = db.Column(db.Enum('cash', 'card', 'credit'), nullable=False)
     discount = db.Column(db.Integer, nullable=False)
     amount = db.Column(db.Integer, nullable=True)
     kots = relationship('BillKOT', back_populates='bill', lazy=True)
@@ -180,6 +180,7 @@ class Bill(db.Model):
     def getTotalCost(start_date,end_date):
         cost = db.session.query(func.sum(Bill.amount))\
         .filter(Bill.timestamp.between(start_date,end_date))\
+        .filter(Bill.payment_mode != 'credit')\
         .scalar()
         return cost
 

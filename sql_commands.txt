@@ -4,3 +4,5 @@ rename table billkot to bill_kot;
 ALTER TABLE orders ADD message VARCHAR(250) NOT NULL DEFAULT '' AFTER `rank`;
 alter table bill add column amount int(11) default 0;
 alter table `bill` change `timestamp` timestamp not null default 0;
+
+ALTER TABLE `bill` CHANGE `payment_mode` `payment_mode` ENUM('cash','card','credit') CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
