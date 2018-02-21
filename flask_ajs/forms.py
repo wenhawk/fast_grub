@@ -11,23 +11,11 @@ class TableForm(FlaskForm):
     tid = FieldList(IntegerField('tid', validators=[DataRequired()]))
     flag = FieldList(SelectField('flag', choices=[('true','Active'),('false','Delete')]))
 
-class TableCreateForm(FlaskForm):
+class SearchForm(FlaskForm):
         name = StringField('Name', validators=[DataRequired()])
 
-class TableSearchForm(FlaskForm):
-    name = StringField("Table Name" , validators=[DataRequired()])
-
-class ItemSearchForm(FlaskForm):
-    name = StringField("Item Name" , validators=[DataRequired()])
-
-class SubItemSearchForm(FlaskForm):
-    name = StringField("Item Name" , validators=[DataRequired()])
-
-class BillSearchForm(FlaskForm):
-    bid = IntegerField("Table Name" , validators=[DataRequired()])
-
-class KOTSearchForm(FlaskForm):
-    kid = IntegerField("Table Name" , validators=[DataRequired()])
+class IdSearchForm(FlaskForm):
+        id = IntegerField('ID', validators=[DataRequired()])
 
 class KOTForm(FlaskForm):
     iid = FieldList(IntegerField('ITEM ID', validators=[DataRequired()]))

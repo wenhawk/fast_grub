@@ -3,8 +3,7 @@ from flask import render_template, url_for, redirect, request, jsonify
 from .models import Item, KOT, Order, AjTable, Bill, BillKOT, SubItem\
                     ,Category ,ItemCategory, SubItemCategory
 from .forms import ItemForm, KOTForm, OrderForm\
-, OrderStatusForm, BillForm, TableForm, ReportForm, TableSearchForm\
-,BillSearchForm ,KOTSearchForm, TableCreateForm, ItemSearchForm, SubItemSearchForm
+, OrderStatusForm, BillForm, TableForm, ReportForm , SearchForm, IdSearchForm
 from .printer import Printer
 from . import db
 from datetime import datetime
@@ -48,7 +47,7 @@ def report():
 @app.route('/table/trash<int:page>' ,methods=['GET','POST'])
 def trash(page):
     form = TableForm()
-    tableSearch = TableSearchForm()
+    tableSearch = SearchForm()
     if not tableSearch.name.data:
         tableSearch.name.data=""
     paginate = aj_tables = AjTable.query\
@@ -162,9 +161,9 @@ def item_jason(iid):
 
 @app.route('/admin/view_kots<int:page>', methods=['GET', 'POST'])
 def admin_view_kots(page):
-    form = KOTSearchForm()
+    form = IdSearchForm()
     if form.validate_on_submit():
-        paginate = KOT.query.filter_by(kid=form.kid.data)\
+        paginate = KOT.query.filter_by(kid=form.id.data)\
         .paginate(page,9,False)
     else:
         paginate = KOT.query.order_by(desc('kid')).paginate(page,8,False)
@@ -176,9 +175,9 @@ def admin_view_kots(page):
 
 @app.route('/admin/view_bills<int:page>', methods=['GET', 'POST'])
 def view_bills(page):
-    form = BillSearchForm()
+    form = IdSearchForm()
     if form.validate_on_submit():
-        paginate = Bill.query.filter_by(bid=form.bid.data)\
+        paginate = Bill.query.filter_by(bid=form.id.data)\
         .paginate(page, 9, False)
     else:
         paginate = Bill.query.order_by(desc('bid')).paginate(page, 8, False)
@@ -223,7 +222,7 @@ def create_table():
 
 @app.route('/admin/view_items<int:page>', methods=['GET','POST'])
 def view_items(page):
-    form = ItemSearchForm()
+    form = SearchForm()
     if form.validate_on_submit():
         paginate = Item.query.filter(Item.name.like('%'+form.name.data+'%'))\
                    .filter_by(flag='true')\
@@ -236,7 +235,7 @@ def view_items(page):
 
 @app.route('/admin/view_sub_items<int:page>', methods=['GET','POST'])
 def view_sub_items(page):
-    form = SubItemSearchForm()
+    form = SearchForm()
     if form.validate_on_submit():
         paginate = SubItem.query.filter(SubItem.name.like('%'+form.name.data+'%'))\
                    .filter_by(flag='true')\
@@ -249,7 +248,7 @@ def view_sub_items(page):
 
 @app.route('/admin/view_categories<int:page>', methods=['GET','POST'])
 def view_categories(page):
-    form = SubItemSearchForm()
+    form = SearchForm()
     if form.validate_on_submit():
         paginate = Category.query.filter(Category.name.like('%'+form.name.data+'%'))\
                    .paginate(page, 8, False)
@@ -261,7 +260,7 @@ def view_categories(page):
 
 @app.route('/admin/view_item_category<int:page>', methods=['GET','POST'])
 def view_item_category(page):
-    form = SubItemSearchForm()
+    form = SearchForm()
     paginate = ItemCategory.query.paginate(page, 8, False)
     item_categories = paginate.items
     return render_template('admin/view_item_category.html', form=form\
@@ -269,7 +268,7 @@ def view_item_category(page):
 
 @app.route('/admin/view_sub_item_category<int:page>', methods=['GET','POST'])
 def view_sub_item_category(page):
-    form = SubItemSearchForm()
+    form = SearchForm()
     paginate = SubItemCategory.query.paginate(page, 8, False)
     sub_item_categories = paginate.items
     return render_template('admin/view_sub_item_category.html', form=form\
