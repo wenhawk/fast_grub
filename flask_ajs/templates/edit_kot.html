@@ -1,0 +1,64 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<div class="container">
+<h2>{{orders[0].table.name}}</h2>
+  <table class="table ">
+      <th>Item</th>
+      <th>Quantity</th>
+      <th>Message</th>
+      <th>Status</th>
+      {% if title == 'kot' %}
+      <form class="" action="{{url_for('edit_kot',kid=kid)}}" method="post">
+      {% else %}
+      <form class="" action="{{url_for('edit_kots',tid=tid)}}" method="post">
+      {% endif %}
+        {{form.hidden_tag()}}
+        {% for order in orders %}
+          <tr>
+            <td>{{order.item.name}}</td>
+            <input type="hidden" name="iid-{{loop.index}}" id="iid-{{loop.index}}" value="{{order.iid}}">
+            <td><input class="form-control" type="text" name="quantity-{{loop.index}}" id="quantity-{{loop.index}}" value="{{order.quantity}}"> </td>
+            <td><input class="form-control" type="text" name="message-{{loop.index}}" id="message-{{loop.index}}" value="{{order.message}}"> </td>
+            <input type="hidden" name="kid-{{loop.index}}" id="kid-{{loop.index}}" value="{{order.kid}}">
+            <input type="hidden" name="rank-{{loop.index}}" id="rank-{{loop.index}}" value="{{order.rank}}">
+            <td>
+            <select class="form-control" name="flag-{{loop.index}}" id="flag-{{loop.index}}" >
+              <option value="true">Active</option>
+              <option value="false">Deleted</option>
+            </select>
+            </td>
+          </tr>
+        {% endfor %}
+      </table>
+      <div class="row">
+        <div class="col-md">
+
+        </div>
+        <div class="col-md">
+          <span>&nbsp </span>
+          <center><button type="submit" class="btn btn-success" name="button">SUBMIT</button></center>
+        </div>
+        <div class="col-md">
+          <strong>{{form.printFlag.label}}</strong>
+          <select class="form-control" name="printFlag" id="printFlag">
+            {% if title == 'kot' %}
+            <option value="yes">YES</option>
+            <option value="no">NO</option>
+            {% else %}
+            <option value="no">NO</option>
+            {% endif %}
+
+
+          </select>
+        </div>
+        <div class="col-md">
+
+        </div>
+
+      </div>
+
+      </form>
+      <br><br>
+
+{% endblock %}

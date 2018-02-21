@@ -1,0 +1,46 @@
+{% extends 'index.html' %}
+
+{% block content %}
+
+<div class="container">
+<form class="" action="{{url_for('report')}}" method="post">
+{{form.hidden_tag()}}
+  <div class="row">
+    <div class="col-md">
+      <strong><label class="">Start Date</label></strong>
+      <input name="start_date" data-date-format="yyyy-mm-dd" data-provide="datepicker" type="text" class="form-control" value="">
+    </div>
+    <div class="col-md">
+      <strong><label class="">End Date</label></strong>
+      <input name="end_date"  data-date-format="yyyy-mm-dd" data-provide="datepicker" type="text" class="form-control" value="">
+    </div>
+    <div class="col-md">
+      <strong><label class="">Filter By</label></strong>
+      <select class="form-control" name="sortBy">
+        <option value="category">CATEGORY</option>
+        <option value="item">ITEM</option>
+      </select>
+    </div>
+  </div>
+  <br>
+  <div class="row">
+    <div class="col-md-5">
+
+    </div>
+    <div class="col-md-3">
+        <input type="submit" name="Generate"  class="btn btn-success" value="Generate">
+    </div>
+    <div class="col-md-4">
+
+    </div>
+  </div>
+</form>
+
+
+
+</div>
+<script type="text/javascript">
+  $.fn.datepicker.defaults.format = "yyyy-mm-dd";
+</script>
+
+{% endblock %}

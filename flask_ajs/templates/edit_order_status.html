@@ -1,0 +1,81 @@
+{% extends 'index.html' %}
+
+{% block content %}
+
+<style >
+.table td, .table th {
+  padding: .15rem;
+  vertical-align: top;
+  border-top: 1px solid #dee2e6;
+}
+</style>
+
+<div class='container'>
+<div class="row">
+    <div class='col-md'>
+        <table class='table'>
+
+        <th><h3>Item</h3></th>
+        <th><h3>Table</h3></th>
+        <th><h3>Q</h3></th>
+        <th><h3>Status</h3></th>
+
+        {% for s_order in s_orders %}
+        <tr style="background-color:#E1FFE2;" >
+            <td>{{s_order.item.name}}</td>
+            <td>{{s_order.table.name}}</td>
+            <td>{{s_order.quantity}}</td>
+              <form class="" action="" method="post">
+              {{form.hidden_tag()}}
+                <input type="hidden" name="iid-{{loop.index}}" id="iid-{{loop.index}}" value="{{s_order.iid}}">
+                <input type="hidden" name="tid-{{loop.index}}" id="tid-{{loop.index}}" value="{{s_order.tid}}">
+                <input type="hidden" name="kid-{{loop.index}}" id="kid-{{loop.index}}" value="{{s_order.kid}}">
+                <input type="hidden" name="rank-{{loop.index}}" id="rank-{{loop.index}}" value="{{s_order.rank}}">
+              <td>
+                <select onchange="this.form.submit()" class="form-control" name="status-{{loop.index}}" id="status-{{loop.index}}" >
+                  <option value=1>Served</option>
+                  <option value=0>Not Served</option>
+                </select>
+              </td>
+              </form>
+        </tr>
+        {% endfor %}
+        </table>
+    </div>
+
+    <div class='col-md'>
+      <table class='table'>
+
+      <th><h3>Item</h3></th>
+      <th><h3>Table</h3></th>
+      <th><h3>Q</h3></th>
+      <th><h3>Status</h3></th>
+
+      {% for ns_order in ns_orders %}
+      <form action="" method="post">
+      <tr style="background-color:#FFE6E6;">
+          <td>{{ns_order.item.name}}</td>
+          <td>{{ns_order.table.name}}</td>
+          <td>{{ns_order.quantity}}</td>
+          {{form.hidden_tag()}}
+            <input type="hidden" name="iid-{{loop.index}}" id="iid-{{loop.index}}" value="{{ns_order.iid}}">
+            <input type="hidden" name="tid-{{loop.index}}" id="tid-{{loop.index}}" value="{{ns_order.tid}}">
+            <input type="hidden" name="kid-{{loop.index}}" id="kid-{{loop.index}}" value="{{ns_order.kid}}">
+            <input type="hidden" name="rank-{{loop.index}}" id="rank-{{loop.index}}" value="{{ns_order.rank}}">
+            <td>
+              <select onchange="this.form.submit()" class="form-control" name="status-{{loop.index}}" id="status-{{loop.index}}" >
+                <option value=0 >Not Served</option>
+                <option value=1 >Served</option>
+              </select>
+            </td>
+       </tr>
+          </form>
+      {% endfor %}
+      </table>
+  </div>
+</div>
+
+</div>
+</form>
+
+{% endblock %}

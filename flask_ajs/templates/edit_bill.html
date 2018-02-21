@@ -1,0 +1,55 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<div class="container">
+<h2>{{aj_table.name}}</h2>
+  <table class="table ">
+      <th>Item</th>
+      <th>Cost</th>
+      <th>Quantity</th>
+      <th>Total Cost</th>
+      {% for quantity_item in quantity_items %}
+        <tr>
+          <td>{{quantity_item.get('item').cat}}</td>
+          <td>{{quantity_item.get('item').cost}}</td>
+          <td>{{quantity_item.get('quantity')}}</td>
+          <td>{{quantity_item.get('item').cost * quantity_item.get('quantity')}}</td>
+        </tr>
+      {% endfor %}
+      <tr>
+        <form class="" action="{{url_for('update_and_print_bill')}}" method="post">
+        <input type="hidden" name="tid" id="tid" value="{{aj_table.tid}}">
+        {{form.hidden_tag()}}
+        <input type="hidden" name="bid" id="bid" value="{{bill.bid}}">
+        <td>
+          <strong>{{form.discount.label}}</strong>
+          <input placeholder="%" class="form-control" type="number" name="discount" value="{{bill.discount}}">
+        </td>
+        <td>
+          <strong>{{form.payment_mode.label}}</strong>
+          <select class="form-control" name="payment_mode" id="payment_mode">
+            <option value="cash">Cash</option>
+            <option value="card">Card</option>
+          </select>
+        </td>
+        <td>
+          <strong>{{form.printFlag.label}}</strong>
+          <select class="form-control" name="printFlag" id="payment_mode">
+            <option value="yes">YES</option>
+            <option value="no">NO</option>
+          </select>
+        </td>
+        <td>
+          <h3>&nbsp<h3>
+          <h3>{{bill.amount}}<h3>
+        </td>
+        <tr>
+  </table>
+
+</div>
+
+  <center><button class="btn btn-success" type="submit" name="button">SUBMIT</button><center>
+</form>
+
+
+{% endblock %}

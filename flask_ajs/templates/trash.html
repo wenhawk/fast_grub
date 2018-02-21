@@ -1,0 +1,79 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<div class="container">
+  <form class="" action="{{url_for('trash',page=1)}}" method="post">
+    {{form.hidden_tag()}}
+    <div class="row">
+      <div class="col-md">
+
+      </div>
+      <div class="col-md">
+          <input placeholder="Search" id="name" class="form-control" type="text" name="name" value="">
+      </div>
+      <div class="col-md">
+
+      </div>
+    </div>
+    <br>
+  {% for table in aj_tables %}
+    {% if loop.index == 1 %}
+    <div class="row">
+    {% endif %}
+
+    </form>
+    <div class="col-md">
+      <div class="card" style="width: 20rem;">
+        <div class="card-block list-group list-group-flush">
+          <center><h3 style="background-color:#F0F0F0;" class="card-title list-group-item">{{table.name}}</h4></center>
+        </div>
+        <ul class="list-group list-group-flush">
+          <form class="" action="{{url_for('edit_table_status')}}" method="post">
+            {{form.hidden_tag()}}
+          <input type="hidden" name="tid-{{loop.index}}" id="tid-{{loop.index}}" value="{{table.tid}}">
+          <li class="list-group-item">
+            <select onchange="this.form.submit()" class="form-control" name="flag-{{loop.index}}" id="flag-{{loop.index}}">
+              <option value="false">Deleted</option>
+              <option value="true">Activate</option>
+            </select>
+          </li>
+          </form>
+        </ul>
+
+      </div>
+      </div>
+      {% if (loop.index)%3 == 0%}
+      </div>
+      <br>
+      <div class="row">
+      {% endif %}
+  {% endfor %}
+</div>
+<br>
+<div class="row">
+
+  <ul class="pagination">
+  {% if paginate.has_prev %}
+    <li class="page-item"><a class="page-link" href="{{url_for('trash',page=paginate.page -1)}}">Previous</a></li>
+  {% else %}
+  <li class="page-item disabled"><a class="page-link" href="{{url_for('trash',page=paginate.page -1)}}">Previous</a></li>
+  {% endif %}
+  {% for page in paginate.iter_pages() %}
+  {% if page %}
+    {% if page != paginate.page %}
+    <li class="page-item"><a class="page-link" href="{{ url_for('trash', page=page) }}">{{ page }}</a></li>
+    {% endif %}
+    {% endif %}
+  {% endfor %}
+  {% if paginate.has_next %}
+  <li class="page-item"><a class="page-link" href="{{url_for('trash',page=paginate.page +1)}}">Next</a></li>
+  {% else %}
+  <li class="page-item disabled"><a class="page-link" href="{{url_for('trash',page=paginate.page +1)}}">Next</a></li>
+  {% endif %}
+</div>
+<script type="text/javascript">
+  document.getElementById('name').focus();
+</script>
+
+
+{% endblock %}

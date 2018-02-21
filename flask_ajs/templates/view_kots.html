@@ -1,0 +1,35 @@
+{% extends 'index.html' %}
+
+{% block content %}
+
+<div class="container">
+
+<div class="row">
+  <div class="col-md">
+
+  </div>
+  <div class="col-md">
+    <h2>KOT</h2>
+    <table class="table">
+      <tr>
+        <td><a href="{{url_for('edit_kots',tid=table.tid)}}">EDIT ALL KOT </a></td>
+      </tr>
+      {% for kot in kots %}
+        <div class="col-md">
+          <tr>
+            <td><a href="{{url_for('edit_kot',kid=kot.kid)}}">KOT {{kot.kid}}</a></td>
+          </tr>
+        </div>
+      {% endfor %}
+
+    </table>
+  </div>
+  <div class="col-md">
+
+  </div>
+</div>
+
+
+</div>
+
+{% endblock %}

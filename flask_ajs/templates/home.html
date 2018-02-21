@@ -1,0 +1,51 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<div class="container">
+  {% for table in aj_tables %}
+    {% if loop.index == 1 %}
+    <div class="row">
+    {% endif %}
+    <div class="col-md">
+      <div class="card" style="width: 20rem;">
+        <div class="card-block list-group list-group-flush">
+          {% if table.getOrdersNotBilled() %}
+          <center><h3 style="background-color:#FFE6E6;" class="card-title list-group-item">{{table.name}}</h4></center>
+          {% else %}
+            <center><h3 style="background-color:#E1FFE2;" class="card-title list-group-item">{{table.name}}</h4></center>
+          {% endif %}
+        </div>
+        <ul class="list-group list-group-flush">
+          <a  href="{{url_for('generate_kot',tid=table.tid)}}">
+            <li class="list-group-item">Generate Kot</a>
+              &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
+              <a  href="{{url_for('generate_bill',tid=table.tid)}}"> Generate Bill </a>
+
+           </li>
+           <a  href="{{url_for('view_kots',tid=table.tid)}}">
+            <center> <li class="list-group-item">View Kots</a>
+            </li><center>
+          <form class="" action="{{url_for('edit_table_status')}}" method="post">
+            {{form.hidden_tag()}}
+          <input type="hidden" name="tid-{{loop.index}}" id="tid-{{loop.index}}" value="{{table.tid}}">
+          <li class="list-group-item">
+            <select onchange="this.form.submit()" class="form-control" name="flag-{{loop.index}}" id="flag-{{loop.index}}">
+              <option value="true">Active</option>
+              <option value="false">Delete</option>
+            </select>
+          </li>
+          </form>
+        </ul>
+      </div>
+      </div>
+      {% if (loop.index)%3 == 0%}
+      </div>
+      <br>
+      <div class="row">
+      {% endif %}
+  {% endfor %}
+
+</div>
+  <br><br>  <br><br>
+
+{% endblock %}

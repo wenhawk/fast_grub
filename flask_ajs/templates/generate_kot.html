@@ -1,0 +1,218 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<style>
+
+.hide{
+    display: none;
+}
+</style>
+<div class='container'>
+  <h2>{{aj_table.name}}</h2><br>
+    <div class="item-form">
+        <div class="row">
+          <div class="col-md">
+              <select class="js-example-basic-single form-control" id="items" name="items" onchange="getData()">
+                {% for item in items %}
+                <option value="{{item.iid}}">{{item.name}}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+          <div class="col-md">
+            <input style="" id="addButton" type="button" class="btn btn-success" value="+" onclick="addField();"><br><br>
+            </div>
+    </div>
+
+    <div class='row' id = 'test'>
+    </div>
+
+    <br>
+    <form class="" action="{{url_for('generate_kot',tid=aj_table.tid)}}" method="post">
+      {{form.csrf_token()}}
+      <table id="myTable" class="table table-condensed">
+              <th>ITEM</th>
+              <th>QUANTITY</th>
+              <th>MESSAGE</th>
+      </table>
+
+      <div class="form-group">
+          <center></center>
+      </div>
+      <center><input type="submit" class="btn btn-success" name="" value="Generate"></center>
+    </form>
+    <br><br>
+</div>
+</div>
+
+<script>
+
+    function isTouchDevice() {
+        return 'ontouchstart' in window || 'onmsgesturechange' in window;
+    }
+
+    rowCount = 1;
+    iid_count = 0;
+    rank_count = 0;
+    quantity_count = 0;
+    message_count = 0
+    item_name_count = 0;
+    function addField (argument) {
+            var divisionTest = document.getElementById("test");
+
+            var myTable = document.getElementById("myTable");
+            var currentIndex = myTable.rows.length;
+            var currentRow = myTable.insertRow(-1);
+
+            var button = document.createElement("button");
+            button.innerHTML = "X";
+            button.className = "btn btn-danger";
+            button.addEventListener("click", function() {
+                p= button.parentNode.parentNode;
+                p.parentNode.removeChild(p);
+                document.getElementById('items').focus();
+            });
+
+            var item = document.getElementById("items");
+            var itemValue = item.options[item.selectedIndex].text;
+
+            var quantity = 1;
+
+            var activeItem = document.createElement("input");
+            activeItem.className = "form-control";
+            activeItem.type = "text";
+            activeItem.name = "iid-"+iid_count;
+            activeItem.id = "iid-"+iid_count;
+            activeItem.value = item.value;
+
+            var activeQuantity = document.createElement("input");
+            activeQuantity.className = "form-control";
+            activeQuantity.type = "number";
+            activeQuantity.name = "quantity-"+quantity_count;
+            activeQuantity.id = "quantity-"+quantity_count;
+            activeQuantity.value = quantity;
+
+            var activeMessage = document.createElement("input");
+            activeMessage.className = "form-control";
+            activeMessage.type = "text";
+            activeMessage.name = "message-"+message_count;
+            activeMessage.id = "message-"+message_count;
+            activeMessage.value = "";
+
+            var activeRank = document.createElement("input");
+            activeRank.className = "form-control";
+            activeRank.type = "text";
+            activeRank.name = "rank-"+rank_count;
+            activeRank.id = "rank-"+rank_count;
+            activeRank.value = rowCount;
+
+             c = divisionTest.children;
+            subItemString = itemValue;
+            for(j = 0; j < c.length; j++ ){
+                subItemString = subItemString +' '+ c[j].children[0].options[c[j].children[0].selectedIndex].text;
+                subItemValue = c[j].children[0].options[c[j].children[0].selectedIndex].value;
+            }
+
+            var activeSubItem = document.createElement("input");
+            activeSubItem.className = "form-control";
+            activeSubItem.type = "text";
+            activeSubItem.name = "item_name-"+item_name_count;
+            activeSubItem.id = "item_name-"+item_name_count;
+            activeSubItem.value = subItemString;
+
+            currentCell = currentRow.insertCell(-1);
+             currentCell.className = 'hide';
+            currentCell.appendChild(activeSubItem);
+
+            var t1 = document.createTextNode(subItemString);
+            var t3 = document.createTextNode(quantity);
+
+            var p1 = document.createElement("P");
+            p1.setAttribute("name", "item" + currentIndex);
+            p1.appendChild(t1);
+
+            var p3 = document.createElement("P");
+            p3.setAttribute("name", "quantity" + currentIndex);
+            p3.appendChild(t3);
+
+            var currentCell = currentRow.insertCell(-1);
+            currentCell.appendChild(p1);
+
+            currentCell = currentRow.insertCell(-1);
+            currentCell.appendChild(activeQuantity);
+
+            currentCell = currentRow.insertCell(-1);
+            currentCell.className = 'hide';
+            currentCell.appendChild(activeItem);
+
+            currentCell = currentRow.insertCell(-1);
+
+            currentCell.appendChild(activeRank);
+            currentCell.className = 'hide';
+
+            currentCell = currentRow.insertCell(-1);
+            currentCell.appendChild(activeMessage);
+
+            currentCell = currentRow.insertCell(-1);
+            currentCell.appendChild(button);
+            rowCount++;
+
+            iid_count = iid_count + 1;
+            quantity_count = quantity_count + 1;
+            rank_count = rank_count + 1;
+            message_count = message_count + 1;
+            item_name_count = item_name_count + 1;
+
+            document.getElementById('items').focus();
+        }
+
+        function SomeDeleteRowFunction(o) {
+        var p=o.parentNode.parentNode;
+        }
+
+        var divisionTest = document.getElementById("test");
+
+        function getData(){
+            divisionTest.innerHTML = '';
+            var item = document.getElementById("items");
+            var itemValue = item.value;
+            var ourRequest = new XMLHttpRequest();
+            if(isTouchDevice()){
+            ourRequest.open( 'GET' , 'http://192.168.1.9/aj/web/index.php?r=kot%2Fajax&id='+itemValue);
+            }
+            else{
+            ourRequest.open( 'GET' , 'http://localhost:5000/item/jason/'+itemValue);
+            }
+            ourRequest.onload = function (){
+            var ourData = JSON.parse(ourRequest.responseText);
+            renderHTML(ourData);
+            };
+
+          ourRequest.send();
+
+        }
+
+        function renderHTML(data){
+            divisionTest.innerHTML = '';
+            console.log('hello');
+            string = '';
+            for(i = 0;i < data.item.length ; i++){
+                string = string + '<div class=\"col-md-4\">';
+                string = string + '<select  class=\"form-control\">'
+                for (j = 0; j < data.item[i].values.length; j++) {
+                  string = string + '<option value=\"'+data.item[i].values[j].sid+'\">'+ data.item[i].values[j].name + '</option>';
+                }
+                string = string + '</select>'
+                string = string + '</div>';
+            }
+            divisionTest.insertAdjacentHTML("beforeend",string);
+              document.getElementById('addButton').focus();
+        }
+
+    </script>
+    <script>
+    $(document).ready(function() {
+        $('.js-example-basic-single').select2();
+    });
+    </script>
+{% endblock %}

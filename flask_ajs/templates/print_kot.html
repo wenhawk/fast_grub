@@ -1,0 +1,25 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<div class="container">
+<h2>{{orders[0].table.name}}</h2>
+  <table class="table ">
+      <th>Item</th>
+      <th>Cost</th>
+      <th>Quantity</th>
+    <form class="" action="{{url_for('print_kot',kid=orders[0].kid)}}" method="post">
+      {% for order in orders %}
+        <tr>
+          <td>{{order.item.name}}</td>
+          <td>{{order.item.cost}}</td>
+          <td>{{order.quantity}}</td>
+        </tr>
+      {% endfor %}
+  </table>
+</div>
+
+
+  <center><button class="btn btn-success" type="submit" name="button">PRINT</button><center>
+</form>
+
+{% endblock %}

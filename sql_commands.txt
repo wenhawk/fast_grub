@@ -1,0 +1,6 @@
+rename table tableaj to aj_table;
+alter table kot add column flag enum('true','false') not null;
+rename table billkot to bill_kot;
+ALTER TABLE orders ADD message VARCHAR(250) NOT NULL DEFAULT '' AFTER `rank`;
+alter table bill add column amount int(11) default 0;
+alter table `bill` change `timestamp` timestamp not null default 0;

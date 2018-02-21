@@ -1,0 +1,18 @@
+{% extends 'index.html' %}
+{% block content %}
+<div class="container">
+  <h1>{{title}} Table</h1>
+    {% if title == 'CREATE' %}
+    <form  class="form form-register" method="POST" action="{{url_for('create_table')}}" role="form">
+      {% else %}
+      <form  class="form form-register" method="POST" action="{{url_for('edit_table',tid=table.tid)}}" role="form">
+        {% endif %}
+            {{ form.hidden_tag() }}
+            <div class=" col-md form-group">
+                {{form.name.label}}
+                {{form.name(placeholder="Table Name", class_="form-control")}}
+            </div>
+            <p><input class="btn btn-default btn-submit" type="submit" value="SUBMIT"></p>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,77 @@
+{% extends 'index.html' %}
+
+
+{% block content %}
+
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='DataTables/datatables.min.css')}}"/>
+<script type="text/javascript" src="{{url_for('static', filename='DataTables/datatables.min.js')}}"></script>
+<div class="container">
+
+
+<div class="row">
+  <div class="col-md">
+
+  </div>
+  <div class="col-md">
+      <h2>Total</h2>
+      <h4>{{cost}}</h4>
+  </div>
+  <div class="col-md">
+    <h2>Cash</h2>
+    <h4>{{cash}}</h4>
+  </div>
+  <div class="col-md">
+    <h2>Card</h2>
+    <h4>{{card}}</h4>
+  </div>
+  <div class="col-md">
+
+  </div>
+</div>
+
+<br>
+  <table id="example" class="table">
+    <thead>
+    <th>Item Name</th>
+    <th>Cost</th>
+    <th>Quatity</th>
+    <th>Total Cost</th>
+  </thead>
+  <tfoot>
+    <th>Item Name</th>
+    <th>Cost</th>
+    <th>Quatity</th>
+    <th>Total Cost</th>
+  </tfoot>
+  <tbody>
+    {% for iq in item_quantity %}
+      <tr>
+        {% if sortBy == 'item' %}
+        <td>{{iq.get('item').name}}</td>
+        {% else %}
+        <td>{{iq.get('item').cat}}</td>
+        {% endif %}
+        <td>{{iq.get('item').cost}}</td>
+        <td>{{iq.get('quantity')}}</td>
+        <td>{{iq.get('quantity') * iq.get('item').cost }}</td>
+      </tr>
+    {% endfor %}
+</tbody>
+
+  </table>
+
+</div>
+
+<script type="text/javascript">
+
+$(document).ready(function() {
+  $('#example').DataTable( {
+          "paging":   false,
+          "info":     false
+      } );
+    
+
+} );
+</script>
+
+{% endblock %}

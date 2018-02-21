@@ -1,0 +1,19 @@
+{% extends 'index.html' %}
+{% block content %}
+<div class="container">
+  <h1>{{title}} Item</h1>
+    <br/>
+    <form id="itemForm" class="form form-register" method="POST" action="" role="form">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                {{form.name.label}}
+                {{form.name(placeholder="Item Name", class_="form-control")}}
+            </div>
+            <div class="form-group">
+                {{form.cost.label}}
+                {{form.cost(placeholder="Enter Cost of the item", class_="form-control")}}
+            </div>
+            <p><input class="btn btn-default btn-submit" type="submit" value="SUBMIT"></p>
+    </form>
+</div>
+{% endblock %}
