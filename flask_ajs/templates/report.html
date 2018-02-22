@@ -8,7 +8,7 @@
   <div class="row">
     <div class="col-md">
       <strong><label class="">Start Date</label></strong>
-      <input name="start_date" data-date-format="yyyy-mm-dd" data-provide="datepicker" type="text" class="form-control" value="">
+      <input id="datepicker" name="start_date" data-date-format="yyyy-mm-dd" data-provide="datepicker" type="text" class="form-control" value="">
     </div>
     <div class="col-md">
       <strong><label class="">End Date</label></strong>
@@ -40,7 +40,10 @@
 
 </div>
 <script type="text/javascript">
-  $.fn.datepicker.defaults.format = "yyyy-mm-dd";
+  $('#datepicker').datepicker({
+    format: 'yyyy-mm-dd',
+    todayHighlight: true
+});
 </script>
 
 {% endblock %}

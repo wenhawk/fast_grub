@@ -24,8 +24,12 @@ def home():
 def report():
     form = ReportForm()
     if form.validate_on_submit():
-        start_date = form.start_date.data
-        end_date = form.end_date.data
+        start_date = str(form.start_date.data) + ' 00:00:00'
+        if form.end_date.data:
+            end_date = str(form.end_date.data) + ' 00:00:00'
+        else:
+            end_date = str(form.start_date.data) + ' 23:59:59'
+        print(start_date,end_date)
         sortBy = form.sortBy.data
         item_quantity = Order.getOrdersByDate(start_date=\
                                 start_date, end_date=end_date, sortBy=sortBy)

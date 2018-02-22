@@ -54,6 +54,6 @@ class BillForm(FlaskForm):
 
 class ReportForm(FlaskForm):
     start_date = DateField('Start Date',  format='%Y-%m-%d' ,validators=[DataRequired()])
-    end_date = DateField('Start Date',  format='%Y-%m-%d')
+    end_date = StringField('End Date')
     sortBy = SelectField('Select Field', choices=[('item','Item')\
                         ,('category','Category')], validators=[DataRequired()])
