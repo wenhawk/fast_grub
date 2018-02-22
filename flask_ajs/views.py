@@ -189,8 +189,21 @@ def view_bills(page):
     else:
         paginate = Bill.query.order_by(desc('bid')).paginate(page, 8, False)
     bills = paginate.items
-    table_cost = [ (bill.amount,bill.getTable()) for bill in bills ]
-    return render_template('admin/view_bills.html', bills=bills, table_cost=table_cost,\
+    return render_template('admin/view_bills.html', bills=bills,\
+                            paginate=paginate, form=form)
+
+@app.route('/admin/view_credit_bills<int:page>', methods=['GET', 'POST'])
+def view_credit_bills(page):
+    form = IdSearchForm()
+    if form.validate_on_submit():
+        paginate = Bill.query.filter_by(bid=form.id.data)\
+        .filter_by(payment_mode = 'Credit')\
+        .paginate(page, 9, False)
+    else:
+        paginate = Bill.query.order_by(desc('bid')).filter_by(payment_mode = 'Credit')\
+                                                   .paginate(page, 8, False)
+    bills = paginate.items
+    return render_template('admin/view_credit_bills.html', bills=bills,\
                             paginate=paginate, form=form)
 
 @app.route('/admin/view_table<int:page>' ,methods=['GET','POST'])
@@ -205,6 +218,7 @@ def view_table(page):
     tables = paginate.items
     return render_template('admin/view_table.html', form=form\
     , paginate=paginate, tables=tables)
+
 
 
 @app.route('/admin/edit_table<int:tid>' ,methods=['GET','POST'])
