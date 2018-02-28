@@ -24,8 +24,8 @@
 
     {% for item_category in item_categories %}
       <tr>
-        <td>{{item_category.item.name}}</td>
-        <td>{{item_category.category.name}}</td>
+        <td>{{item_category.item.name.upper()}}</td>
+        <td>{{item_category.category.name.upper()}}</td>
       </tr>
     {% endfor %}
 

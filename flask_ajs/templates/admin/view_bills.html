@@ -30,7 +30,7 @@
     {% for bill in bills %}
       <tr>
         <td><a href="{{url_for('edit_bill',bid=bill.bid)}}">{{bill.bid}}</td>
-        <td>{{bill.getTable().name}}</td>
+        <td>{{bill.getTable().name.upper()}}</td>
         <td>{{bill.timestamp}}</td>
         <td>{{bill.discount}}</td>
         <td>{{bill.payment_mode.upper()}}</td>

@@ -25,7 +25,7 @@
     {% for category in categories %}
       <tr>
         <td><a href="">{{category.cid}}</a></td>
-        <td>{{category.name}}</td>
+        <td>{{category.name.upper()}}</td>
       </tr>
     {% endfor %}
 

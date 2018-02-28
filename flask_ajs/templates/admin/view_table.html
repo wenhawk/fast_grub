@@ -27,8 +27,8 @@
     {% for table in tables %}
       <tr>
         <td><a href="{{url_for('edit_table',tid=table.tid)}}">{{table.tid}}</a></td>
-        <td>{{table.name}}</td>
-        <td>{{table.flag}}</td>
+        <td>{{table.name.upper()}}</td>
+        <td>{{table.flag.upper()}}</td>
       </tr>
     {% endfor %}
 

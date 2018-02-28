@@ -26,7 +26,7 @@ def report():
     if form.validate_on_submit():
         start_date = str(form.start_date.data) + ' 00:00:00'
         if form.end_date.data:
-            end_date = str(form.end_date.data) + ' 00:00:00'
+            end_date = str(form.end_date.data) + ' 23:59:59'
         else:
             end_date = str(form.start_date.data) + ' 23:59:59'
         print(start_date,end_date)
@@ -58,6 +58,7 @@ def trash(page):
         tableSearch.name.data=""
     paginate = aj_tables = AjTable.query\
         .filter(AjTable.name.like('%'+tableSearch.name.data+'%'))\
+        .filter_by(flag='false')\
         .paginate(page,15,False)
     aj_tables = paginate.items
     return render_template('trash.html', aj_tables=aj_tables, form=form\
