@@ -207,6 +207,34 @@ def view_credit_bills(page):
     return render_template('admin/view_credit_bills.html', bills=bills,\
                             paginate=paginate, form=form)
 
+@app.route('/admin/view_card_bills<int:page>', methods=['GET', 'POST'])
+def view_card_bills(page):
+    form = IdSearchForm()
+    if form.validate_on_submit():
+        paginate = Bill.query.filter_by(bid=form.id.data)\
+        .filter_by(payment_mode = 'Card')\
+        .paginate(page, 9, False)
+    else:
+        paginate = Bill.query.order_by(desc('bid')).filter_by(payment_mode = 'Card')\
+                                                   .paginate(page, 8, False)
+    bills = paginate.items
+    return render_template('admin/view_card_bills.html', bills=bills,\
+                            paginate=paginate, form=form)
+
+@app.route('/admin/view_cash_bills<int:page>', methods=['GET', 'POST'])
+def view_cash_bills(page):
+    form = IdSearchForm()
+    if form.validate_on_submit():
+        paginate = Bill.query.filter_by(bid=form.id.data)\
+        .filter_by(payment_mode = 'Cash')\
+        .paginate(page, 9, False)
+    else:
+        paginate = Bill.query.order_by(desc('bid')).filter_by(payment_mode = 'Cash')\
+                                                   .paginate(page, 8, False)
+    bills = paginate.items
+    return render_template('admin/view_cash_bills.html', bills=bills,\
+                            paginate=paginate, form=form)
+
 @app.route('/admin/view_table<int:page>' ,methods=['GET','POST'])
 def view_table(page):
     form = TableCreateForm()
