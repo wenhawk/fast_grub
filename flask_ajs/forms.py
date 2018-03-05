@@ -47,7 +47,7 @@ class OrderStatusForm(FlaskForm):
 
 class BillForm(FlaskForm):
     payment_mode = SelectField('Payment Mode', choices=[('card','Card'),('cash','Cash'),('credit','Credit')])
-    discount = IntegerField('Discount', validators=[NumberRange(min=0, max=100)])
+    discount = IntegerField('Discount', validators=[NumberRange(min=0, max=100),DataRequired()])
     bid = IntegerField('BIll ID')
     tid = IntegerField('tid', validators=[DataRequired()])
     printFlag = SelectField('PRINT', choices=[('yes','YES'),('no','NO')], validators=[DataRequired()])

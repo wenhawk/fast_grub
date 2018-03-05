@@ -8,7 +8,7 @@
         <h2>Bill</h2>
     </div>
     <div class="col-md">
-      <form class="" action="{{url_for('view_card_bills',page=1)}}" method="post">
+      <form class="" action="{{url_for('view_cash_bills',page=1)}}" method="post">
         {{form.hidden_tag()}}
         <input placeholder="Search" id="name" class="form-control" type="text" name="id" value="">
       </form>
@@ -42,21 +42,21 @@
 
   <ul class="pagination">
   {% if paginate.has_prev %}
-  <li class="page-item"><a class="page-link" href="{{url_for('view_card_bills',page=paginate.page -1)}}">Previous</a></li>
+  <li class="page-item"><a class="page-link" href="{{url_for('view_cash_bills',page=paginate.page -1)}}">Previous</a></li>
   {% else %}
-  <li class="page-item disabled"><a class="page-link" href="{{url_for('view_card_bills',page=paginate.page -1)}}">Previous</a></li>
+  <li class="page-item disabled"><a class="page-link" href="{{url_for('view_cash_bills',page=paginate.page -1)}}">Previous</a></li>
   {% endif %}
   {% for page in paginate.iter_pages() %}
   {% if page %}
     {% if page != paginate.page %}
-    <li class="page-item"><a class="page-link" href="{{ url_for('view_card_bills', page=page) }}">{{ page }}</a></li>
+    <li class="page-item"><a class="page-link" href="{{ url_for('view_cash_bills', page=page) }}">{{ page }}</a></li>
     {% endif %}
     {% endif %}
   {% endfor %}
   {% if paginate.has_next %}
-  <li class="page-item"><a class="page-link" href="{{url_for('view_card_bills',page=paginate.page +1)}}">Next</a></li>
+  <li class="page-item"><a class="page-link" href="{{url_for('view_cash_bills',page=paginate.page +1)}}">Next</a></li>
   {% else %}
-  <li class="page-item disabled"><a class="page-link" href="{{url_for('view_card_bills',page=paginate.page +1)}}">Next</a></li>
+  <li class="page-item disabled"><a class="page-link" href="{{url_for('view_cash_bills',page=paginate.page +1)}}">Next</a></li>
   {% endif %}
 </div>
 

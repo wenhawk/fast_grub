@@ -379,6 +379,8 @@ def print_bill():
         aj_table = AjTable.query.filter_by(tid=form.tid.data).first()
         kots = aj_table.getKots()
         if kots:
+            if form.discount.data == None:
+                form.discount.data = 0
             bill = Bill(payment_mode=form.payment_mode.data, discount=form.discount.data)
             for kot in kots:
                 BillKOT(kid=kot.kid, bid=bill.bid)

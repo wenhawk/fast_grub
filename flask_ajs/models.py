@@ -169,9 +169,12 @@ class Bill(db.Model):
     @staticmethod
     def updateWithForm(form):
         bill = Bill.query.filter_by(bid=form.bid.data).first()
+        if form.discount.data == None:
+            bill.discount = 0
+        else:
+            bill.discount = form.discount.data
         bill.payment_mode = form.payment_mode.data
-        bill.discount = form.discount.data
-        bill.amount = bill.caclulateBillAmount  ()
+        bill.amount = bill.caclulateBillAmount()
         db.session.commit()
         return bill
 
@@ -216,6 +219,13 @@ class Bill(db.Model):
         for order in orders:
             cost += order.item.cost * order.quantity
         return int(cost-(cost*(self.discount)/100))
+
+    def caclulateBillAmountWithDisount(self):
+        orders = self.getOrders()
+        cost = 0
+        for order in orders:
+            cost += order.item.cost * order.quantity
+        return int(cost)
 
 class KOT(db.Model):
     __tablename__= 'kot'

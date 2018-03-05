@@ -23,7 +23,7 @@
         <input type="hidden" name="bid" id="bid" value="{{bill.bid}}">
         <td>
           <strong>{{form.discount.label}}</strong>
-          <input placeholder="%" class="form-control" type="number" name="discount" value="{{bill.discount}}">
+          <input id='discount' placeholder="%" class="form-control" type="number" name="discount" value="{{bill.discount}}">
         </td>
         <td>
           <strong>{{form.payment_mode.label}}</strong>
@@ -42,7 +42,7 @@
         </td>
         <td>
           <h3>&nbsp<h3>
-          <h3>{{bill.amount}}<h3>
+          <h3 id='amount' >{{bill.amount}}<h3>
         </td>
         <tr>
   </table>
@@ -52,5 +52,13 @@
   <center><button class="btn btn-success" type="submit" name="button">SUBMIT</button><center>
 </form>
 
+<script type="text/javascript">
 
+  document.getElementById('discount').addEventListener('keyup', function(){
+   var billAmount = parseInt({{ bill.caclulateBillAmountWithDisount() }});
+    var value = parseInt(document.getElementById('discount').value);
+    billAmount = billAmount - (billAmount * value)/100
+    document.getElementById('amount').innerHTML = parseInt(billAmount)
+  });
+</script>
 {% endblock %}
