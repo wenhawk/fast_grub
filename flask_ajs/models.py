@@ -248,7 +248,10 @@ class KOT(db.Model):
         return string
 
     def getOrders(self):
-        orders = Order.query.filter_by(kid=self.kid,flag='true').all()
+        orders = Order.query\
+        .filter_by(kid=self.kid,flag='true')\
+        .order_by('rank')\
+        .all()
         return orders
 
     def getTable(self):

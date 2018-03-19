@@ -3,27 +3,6 @@
 {% block content %}
 
 <div class="container">
-  <div class="row">
-    <div class="col-md">
-        <h2>Bill</h2>
-    </div>
-    <div class="col-md">
-      <form class="" action="{{url_for('view_bills',page=1)}}" method="post">
-        {{form.hidden_tag()}}
-        <input placeholder="Search" id="name" class="form-control" type="text" name="id" value="">
-      </form>
-    </div>
-    <div class="col-md">
-      <a class="float-right btn btn-success" href="{{url_for('view_credit_bills',page=1)}}">CREDIT</a>
-    </div>
-    <div class="col-md">
-      <a class="float-right btn btn-success" href="{{url_for('view_card_bills',page=1)}}">CARD</a>
-    </div>
-    <div class="col-md">
-      <a class="float-right btn btn-success" href="{{url_for('view_cash_bills',page=1)}}">CASH</a>
-    </div>
-  </div>
-
 
   <table class="table">
     <th>Bill ID</th>
@@ -32,6 +11,15 @@
     <th>Discount</th>
     <th>Payment Mode</th>
     <th>Cost</th>
+
+    <tr>
+      <td><input  id="bid" class="form-control search" type="text" name="bid" value=""></td>
+      <td><input  id="table" class="form-control search" type="text" name="table" value="" ></td>
+      <td><input  id="time" class="form-control search" type="text" name="time" value=""  disabled></td>
+      <td><input  id="discount" class="form-control search" type="text" name="discount" value=""></td>
+      <td><input  id="payment_mode" class="form-control search" type="text" name="payment_mode" value=""></td>
+      <td><input  id="amount" class="form-control search" type="text" name="amount" value=""></td>
+    </tr>
 
     {% for bill in bills %}
       <tr>
@@ -48,27 +36,51 @@
 
   <ul class="pagination">
   {% if paginate.has_prev %}
-  <li class="page-item"><a class="page-link" href="{{url_for('view_bills',page=paginate.page -1)}}">Previous</a></li>
+  <li class="page-item"><a class="page-link" href="{{url_for('view_bills',page=paginate.page -1,payment_mode=payment_mode,amount=amount,discount=discount,bid=bid,table=table) }}">Previous</a></li>
   {% else %}
-  <li class="page-item disabled"><a class="page-link" href="{{url_for('view_bills',page=paginate.page -1)}}">Previous</a></li>
+  <li class="page-item disabled"><a class="page-link" href="{{url_for('view_bills',page=paginate.page -1,payment_mode=payment_mode,amount=amount,discount=discount,bid=bid,table=table) }}">Previous</a></li>
   {% endif %}
   {% for page in paginate.iter_pages() %}
   {% if page %}
     {% if page != paginate.page %}
-    <li class="page-item"><a class="page-link" href="{{ url_for('view_bills', page=page) }}">{{ page }}</a></li>
+    <li class="page-item"><a class="page-link" href="{{ url_for('view_bills', page=page,payment_mode=payment_mode,amount=amount,discount=discount,bid=bid,table=table) }}">{{ page }}</a></li>
     {% endif %}
     {% endif %}
   {% endfor %}
   {% if paginate.has_next %}
-  <li class="page-item"><a class="page-link" href="{{url_for('view_bills',page=paginate.page +1)}}">Next</a></li>
+  <li class="page-item"><a class="page-link" href="{{url_for('view_bills',page=paginate.page +1,payment_mode=payment_mode,amount=amount,discount=discount,bid=bid,table=table) }}">Next</a></li>
   {% else %}
-  <li class="page-item disabled"><a class="page-link" href="{{url_for('view_bills',page=paginate.page +1)}}">Next</a></li>
+  <li class="page-item disabled"><a class="page-link" href="{{url_for('view_bills',page=paginate.page +1,payment_mode=payment_mode,amount=amount,discount=discount,bid=bid,table=table) }}">Next</a></li>
   {% endif %}
 </div>
 
 
 
 <script type="text/javascript">
-  document.getElementById("name").focus()
+
+  document.getElementById('bid').value = ""+"{{bid}}";
+  document.getElementById('amount').value = ""+"{{amount}}";
+  document.getElementById('payment_mode').value = ""+"{{payment_mode}}";
+  document.getElementById('discount').value = ""+"{{discount}}";
+  document.getElementById('table').value = ""+"{{table}}";
+
+  classname = document.getElementsByClassName('search');
+
+  for (var i = 0; i < classname.length; i++) {
+    classname[i].addEventListener('keyup', function(e){
+      if(e.keyCode == 13) {
+        search();
+    }
+    });
+  }
+
+  function search(){
+    bid = document.getElementById('bid').value;
+    amount = document.getElementById('amount').value;
+    payment_mode = document.getElementById('payment_mode').value;
+    discount = document.getElementById('discount').value;
+    table = document.getElementById('table').value;
+    window.location.href = "/admin/view_bills/1?payment_mode="+payment_mode+"&amount="+amount+"&discount="+discount+"&bid="+bid+"&table="+table+"";
+  }
 </script>
 {% endblock %}

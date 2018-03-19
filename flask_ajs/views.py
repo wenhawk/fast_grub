@@ -88,7 +88,7 @@ def view_kots(tid):
 def print_kot(kid):
     form = KOTForm()
     kot = KOT.query.filter_by(kid=kid).first()
-    orders = kot.orders
+    orders = kot.getOrders()
     if request.method == 'POST':
         try:
             Printer.printKOT(orders=orders, kid=kid)
@@ -181,17 +181,44 @@ def admin_view_kots(page):
                             paginate=paginate, form=form)
 
 
-@app.route('/admin/view_bills<int:page>', methods=['GET', 'POST'])
+@app.route('/admin/view_bills/<int:page>', methods=['GET', 'POST'])
 def view_bills(page):
-    form = IdSearchForm()
-    if form.validate_on_submit():
-        paginate = Bill.query.filter_by(bid=form.id.data)\
-        .paginate(page, 9, False)
-    else:
-        paginate = Bill.query.order_by(desc('bid')).paginate(page, 8, False)
+    payment_mode = request.args.get('payment_mode')
+    amount = request.args.get('amount')
+    discount = request.args.get('discount')
+    bid = request.args.get('bid')
+    table = request.args.get('table')
+    if request.args.get('payment_mode') == None:
+        payment_mode = ''
+    if request.args.get('amount') == None:
+        amount = ''
+    if request.args.get('discount') == None:
+        discount = ''
+    if request.args.get('bid') == None:
+        bid = ''
+    if request.args.get('table') == None:
+        table = ''
+    print('payment_mode=',payment_mode)
+    print('discount=',discount)
+    print('amount=',amount)
+    print('bid=',bid)
+    print('table=',table)
+    bill = db.session.query(Bill).order_by(desc('bid'))\
+    .join(BillKOT)\
+    .join(KOT)\
+    .join(Order)\
+    .join(AjTable)\
+    .filter(Bill.bid.like('%'+bid+'%'))\
+    .filter(Bill.payment_mode.like('%'+payment_mode+'%'))\
+    .filter(Bill.discount.like('%'+discount+'%'))\
+    .filter(Bill.amount.like('%'+amount+'%'))\
+    .filter(AjTable.name.like('%'+table+'%'))\
+    .group_by('bill.bid')
+    paginate = bill.paginate(page, 8, False)
     bills = paginate.items
-    return render_template('admin/view_bills.html', bills=bills,\
-                            paginate=paginate, form=form)
+    return render_template('admin/view_bills.html', bills=bills\
+                            ,paginate=paginate,payment_mode=payment_mode\
+                            ,discount=discount,amount=amount,bid=bid, table=table)
 
 @app.route('/admin/view_credit_bills<int:page>', methods=['GET', 'POST'])
 def view_credit_bills(page):
