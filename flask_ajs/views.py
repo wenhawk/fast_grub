@@ -302,7 +302,7 @@ def create_item():
     title = 'CREATE'
     form = ItemForm()
     if form.validate_on_submit():
-        item = Item(name=form.name.data, cost=form.cost.data)
+        item = Item(name=form.name.data, cost=form.cost.data, cat=form.name.data)
         db.session.add(item)
         try:
             db.session.commit()
