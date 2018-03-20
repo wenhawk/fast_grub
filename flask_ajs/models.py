@@ -92,7 +92,8 @@ class AjTable(db.Model):
 
     def getBillSummary(self):
         orders = self.getOrdersNotBilled()
-        item_quantity = Order.getIdenticalItemsFromOrder(orders=orders)
+        item_quantity = Order.getIdenticalCategoryFromOrder(orders=orders)
+        # item_quantity = Order.getIdenticalItemsFromOrder(orders=orders)
         return item_quantity
 
     def changeTableStatus(self, flag):
